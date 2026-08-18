@@ -34,7 +34,7 @@ const frame = document.getElementById('frame');
 const title = document.getElementById('title');
 const openBtn = document.getElementById('open-btn');
 const link = document.getElementById('link');
-const STORAGE_KEY = 'localDashboard_lastService';
+const placeholder = document.getElementById('placeholder');
 
 function renderNav() {
   let html = '';
@@ -64,10 +64,10 @@ function selectService(index) {
   frame.src = item.url;
   link.href = item.url;
   title.textContent = item.name;
+  placeholder.classList.remove('show');
   document.querySelectorAll('.tile').forEach(t => {
     t.classList.toggle('active', t.dataset.index === index);
   });
-  localStorage.setItem(STORAGE_KEY, index);
 }
 
 function openSheet() {
@@ -80,17 +80,20 @@ function closeSheet() {
   backdrop.classList.remove('show');
 }
 
+function showPlaceholder() {
+  placeholder.classList.add('show');
+  frame.removeAttribute('src');
+  title.textContent = 'Services';
+  link.removeAttribute('href');
+}
+
 function init() {
   renderNav();
   openBtn.addEventListener('click', openSheet);
   backdrop.addEventListener('click', closeSheet);
+  placeholder.addEventListener('click', openSheet);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
-
-  const saved = localStorage.getItem(STORAGE_KEY);
-  let index = (saved && saved.includes('-')) ? saved : '0-0';
-  const [c, i] = index.split('-').map(Number);
-  if (!categories[c] || !categories[c].items[i]) index = '0-0';
-  selectService(index);
+  showPlaceholder();
 }
 
 init();
