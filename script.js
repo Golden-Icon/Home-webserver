@@ -27,53 +27,69 @@ const categories = [
   }
 ];
 
+const sheet = document.getElementById('sheet');
+const backdrop = document.getElementById('backdrop');
 const nav = document.getElementById('nav');
 const frame = document.getElementById('frame');
+const title = document.getElementById('title');
+const openBtn = document.getElementById('open-btn');
 const link = document.getElementById('link');
 const STORAGE_KEY = 'localDashboard_lastService';
 
 function renderNav() {
   let html = '';
   categories.forEach((cat, catIndex) => {
-    const collapsedClass = cat.collapsed ? 'collapsed' : '';
-    html += `<div class="category ${collapsedClass}" data-cat="${catIndex}">
+    html += `<div class="category">
       <div class="category-header">${cat.name}</div>
       <div class="category-items">`;
     cat.items.forEach((item, itemIndex) => {
       const globalIndex = `${catIndex}-${itemIndex}`;
-      html += `<div class="nav-item" data-index="${globalIndex}">${item.name}</div>`;
+      html += `<button class="tile" data-index="${globalIndex}">${item.name}</button>`;
     });
     html += '</div></div>';
   });
   nav.innerHTML = html;
 
-  document.querySelectorAll('.category-header').forEach(header => {
-    header.addEventListener('click', () => {
-      header.parentElement.classList.toggle('collapsed');
+  document.querySelectorAll('.tile').forEach(tile => {
+    tile.addEventListener('click', () => {
+      selectService(tile.dataset.index);
+      closeSheet();
     });
-  });
-
-  document.querySelectorAll('.nav-item').forEach(item => {
-    item.addEventListener('click', () => selectService(item.dataset.index));
   });
 }
 
 function selectService(index) {
-  document.querySelectorAll('.nav-item').forEach(el => {
-    el.classList.toggle('active', el.dataset.index === index);
-  });
-  const [catIndex, itemIndex] = index.split('-');
+  const [catIndex, itemIndex] = index.split('-').map(Number);
   const item = categories[catIndex].items[itemIndex];
   frame.src = item.url;
   link.href = item.url;
-  link.textContent = item.url;
+  title.textContent = item.name;
+  document.querySelectorAll('.tile').forEach(t => {
+    t.classList.toggle('active', t.dataset.index === index);
+  });
   localStorage.setItem(STORAGE_KEY, index);
+}
+
+function openSheet() {
+  sheet.classList.add('open');
+  backdrop.classList.add('show');
+}
+
+function closeSheet() {
+  sheet.classList.remove('open');
+  backdrop.classList.remove('show');
 }
 
 function init() {
   renderNav();
+  openBtn.addEventListener('click', openSheet);
+  backdrop.addEventListener('click', closeSheet);
+  document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
+
   const saved = localStorage.getItem(STORAGE_KEY);
-  const index = (saved && saved.includes('-')) ? saved : '0-0';
+  let index = (saved && saved.includes('-')) ? saved : '0-0';
+  const [c, i] = index.split('-').map(Number);
+  if (!categories[c] || !categories[c].items[i]) index = '0-0';
   selectService(index);
 }
 
