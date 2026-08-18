@@ -125,19 +125,27 @@ body {
   flex-shrink: 0;
   background: var(--panel);
   border-top: 1px solid var(--border);
-  padding-bottom: env(safe-area-inset-bottom);
+  padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+  display: flex;
+  justify-content: center;
 }
 
 #open-btn {
-  width: 100%;
-  background: none;
-  border: none;
+  width: auto;
+  background: var(--bg);
+  border: 1px solid var(--border);
   color: var(--text-bright);
   font-size: 15px;
   font-weight: 600;
-  padding: 14px;
+  padding: 10px 28px;
   cursor: pointer;
+  border-radius: 999px;
   font-family: inherit;
+  transition: all 0.15s;
+}
+
+#open-btn:hover {
+  border-color: var(--accent);
 }
 
 #open-btn:active {

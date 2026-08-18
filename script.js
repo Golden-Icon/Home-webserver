@@ -35,6 +35,7 @@ const title = document.getElementById('title');
 const openBtn = document.getElementById('open-btn');
 const link = document.getElementById('link');
 const placeholder = document.getElementById('placeholder');
+const STORAGE_KEY = 'localDashboard_lastService';
 
 function renderNav() {
   let html = '';
@@ -68,6 +69,7 @@ function selectService(index) {
   document.querySelectorAll('.tile').forEach(t => {
     t.classList.toggle('active', t.dataset.index === index);
   });
+  localStorage.setItem(STORAGE_KEY, index);
 }
 
 function openSheet() {
@@ -93,7 +95,15 @@ function init() {
   backdrop.addEventListener('click', closeSheet);
   placeholder.addEventListener('click', openSheet);
   document.addEventListener('keydown', e => { if (e.key === 'Escape') closeSheet(); });
-  showPlaceholder();
+
+  const saved = localStorage.getItem(STORAGE_KEY);
+  const hasValidSaved = saved && saved.includes('-') &&
+    (() => {
+      const [c, i] = saved.split('-').map(Number);
+      return categories[c] && categories[c].items[i];
+    })();
+  if (hasValidSaved) selectService(saved);
+  else showPlaceholder();
 }
 
 init();
