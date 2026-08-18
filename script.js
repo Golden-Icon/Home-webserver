@@ -11,8 +11,8 @@ const categories = [
     items: [
       { name: 'Movie/TV Requests', url: 'https://requests.giconmedia.win' },
       { name: 'Radarr', url: 'https://home.giconmedia.win/radarr/' },
-      { name: 'Sonarr', url: 'https://sonarr.giconmedia.win' },
-      { name: 'Sab', url: 'https://sab.giconmedia.win' },
+      { name: 'Sonarr', url: 'https://home.giconmedia.win/sonarr/' },
+      { name: 'Sab', url: 'https://home.giconmedia.win/sabnzbd/' },
       { name: 'Fileshare', url: 'https://fileshare.giconmedia.win/' },
       { name: 'AudioBooks', url: 'https://audiobooks.giconmedia.win' }
     ]
