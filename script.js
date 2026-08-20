@@ -14,7 +14,8 @@ const categories = [
       { name: 'Sonarr', url: 'https://home.giconmedia.win/sonarr/' },
       { name: 'Sab', url: 'https://home.giconmedia.win/sabnzbd/' },
       { name: 'Fileshare', url: 'https://fileshare.giconmedia.win/' },
-      { name: 'AudioBooks', url: 'https://audiobooks.giconmedia.win' }
+      { name: 'AudioBooks', url: 'https://audiobooks.giconmedia.win' },
+      { name: 'Calendar', url: 'https://calendar.giconmedia.win/calendrier' }
     ]
   },
   {
